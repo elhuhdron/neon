@@ -389,6 +389,10 @@ class Model(NervanaObject):
 
         pdict['model'] = self.layers.get_description(get_weights=get_weights,
                                                      keep_states=keep_states)
+
+        # xxx - watkinspv, hack to save some data meta
+        if hasattr(self, 'batch_meta'): pdict['batch_meta'] = self.batch_meta
+
         return pdict
 
     def save_params(self, param_path, keep_states=True):
@@ -485,6 +489,9 @@ class Model(NervanaObject):
             except ValueError as e:
                 # could come about when switching backend types (ex GPU to CPU)
                 logger.warning("Problems restoring existing RNG state: %s", str(e))
+
+        # xxx - watkinspv, hack to load some data meta
+        if 'batch_meta' in model_dict: self.batch_meta = model_dict['batch_meta']
 
     # serialize tells how to write out the parameters we've learned so
     # far and associate them with layers. it can ignore layers with no

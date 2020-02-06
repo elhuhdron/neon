@@ -832,13 +832,14 @@ class Convolution(ParameterLayer):
         pad_tuple = tuple(self.convparams[k] for k in ['pad_' + d for d in padstr_dim])
         str_tuple = tuple(self.convparams[k] for k in ['str_' + d for d in padstr_dim])
         dil_tuple = tuple(self.convparams[k] for k in ['dil_' + d for d in padstr_dim])
+        shp_tuple = tuple(self.fshape[:input_spatial_dim])
 
         fmt_tuple = (self.name,) + self.in_shape + self.out_shape + (
-                     pad_tuple + str_tuple + dil_tuple)
+                     pad_tuple + str_tuple + dil_tuple + shp_tuple)
         fmt_string = "Convolution Layer '%s': " + \
                      input_spatial_str + " inputs, " + output_spatial_str + " outputs, " + \
                      padstr_str + " padding, " + padstr_str + " stride, " + \
-                     padstr_str + " dilation"
+                     padstr_str + " dilation, " + padstr_str + " shape"
 
         return ((fmt_string % fmt_tuple))
 
