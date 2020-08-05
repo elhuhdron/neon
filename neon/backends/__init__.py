@@ -45,6 +45,11 @@ try:
 except ImportError:
     pass
 
+try:
+    from neon.backends import nervanatfl
+except ImportError:
+    pass
+
 
 def gen_backend(backend='mkl' if get_mkl_lib() else 'cpu',
                 rng_seed=None, datatype=np.float32,
