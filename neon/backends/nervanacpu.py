@@ -678,7 +678,7 @@ class NervanaCPU(Backend):
             numpy_ind[numpy_axis] = numpy_ind0
             numpy_ind[1 - numpy_axis] = numpy_ind1
             array_output[:] = 0
-            array_output[numpy_ind.tolist()] = 1
+            array_output[tuple(numpy_ind.tolist())] = 1
 
             return array_output
 

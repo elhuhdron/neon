@@ -74,7 +74,7 @@ DOC_DIR := doc
 DOC_PUB_RELEASE_PATH := $(DOC_PUB_PATH)/$(RELEASE)
 
 #neon mklEngine object
-MKL_ENGINE  := neon/backends/mklEngine
+#MKL_ENGINE  := neon/backends/mklEngine
 
 VIRTUALENV := $(shell command -v virtualenv 2> /dev/null)
 ifndef VIRTUALENV
@@ -96,7 +96,7 @@ endif
 .PHONY: default all env sysinstall sysinstall_nodeps neon_install python2 python3 \
 	    sysdeps sysuninstall clean_py clean_so \
 	    clean test coverage style lint lint3k check doc html release examples \
-	    serialize_check $(MKL_ENGINE)
+	    serialize_check #$(MKL_ENGINE)
 
 default: env
 
@@ -104,7 +104,8 @@ all:
 	$(MAKE) PY=3 TEST_OPTS='$(TEST_OPTS)' test
 	$(MAKE) PY=2 TEST_OPTS='$(TEST_OPTS)' test
 
-env: $(MKL_ENGINE) $(ACTIVATE)
+#env: $(MKL_ENGINE) $(ACTIVATE)
+env: $(ACTIVATE)
 
 python2: VIRTUALENV_EXE := virtualenv -p python2.7
 python2: VIRTUALENV_DIR := $(VIRTUALENV_DIR_BASE)2
@@ -126,7 +127,7 @@ $(ACTIVATE): requirements.txt gpu_requirements.txt vis_requirements.txt
 	@# https://github.com/h5py/h5py/issues/535
 	@. $(ACTIVATE); pip install cython==0.23.1
 	@. $(ACTIVATE); pip install -r requirements.txt
-	@. $(ACTIVATE); $(MAKE) aeon_install
+	@#. $(ACTIVATE); $(MAKE) aeon_install
 ifeq ($(VIS), true)
 	@echo "Updating visualization related dependecies in $(VIRTUALENV_DIR)..."
 	@. $(ACTIVATE); pip install -r vis_requirements.txt
@@ -147,21 +148,22 @@ endif
 	@echo "###########################################################"
 	@touch $(ACTIVATE)
 	@echo
-$(MKL_ENGINE):
-	@echo "Building MKL Engine..."
-	@./install_mkl.sh intel
+#$(MKL_ENGINE):
+#	@echo "Building MKL Engine..."
+#	@./install_mkl.sh intel
 
 # TODO: handle kernel/.so compilation via setup.py directly
 sysinstall_nodeps: neon_install
-sysinstall: $(MKL_ENGINE) sysdeps neon_install
+#sysinstall: $(MKL_ENGINE) sysdeps neon_install
+sysinstall: sysdeps neon_install
 neon_install:
 	@echo "Installing neon system wide..."
 	@python setup.py install
 	@echo
 
-aeon_install:
-	@echo "Attempting to install optional aeon dataloader..."
-	-@git clone https://github.com/NervanaSystems/aeon.git aeon ; cd aeon && git fetch && git checkout tags/v1.3.0 && mkdir -p build && cd build && rm -rf * && cmake .. && pip install .
+#aeon_install:
+#	@echo "Attempting to install optional aeon dataloader..."
+#	-@git clone https://github.com/NervanaSystems/aeon.git aeon ; cd aeon && git fetch && git checkout tags/v1.3.0 && mkdir -p build && cd build && rm -rf * && cmake .. && pip install .
 
 sysdeps:
 	@echo "Installing neon dependencies system wide..."
@@ -169,7 +171,7 @@ sysdeps:
 	@# https://github.com/h5py/h5py/issues/535
 	@pip install cython==0.23.1
 	@pip install -r requirements.txt
-	$(MAKE) aeon_install
+	#$(MAKE) aeon_install
 ifeq ($(VIS), true)
 	@pip install -r vis_requirements.txt
 endif
@@ -189,12 +191,13 @@ clean_py:
 
 clean_so:
 	@echo "Cleaning compiled shared object files..."
-	@cd $(MKL_ENGINE) && $(MAKE) clean
+	#@cd $(MKL_ENGINE) && $(MAKE) clean
 	@echo
 
 clean: clean_py clean_so
 	@echo "Removing virtual environment files..."
-	@rm -rf aeon build dist mklml_*
+	#@rm -rf aeon build dist mklml_*
+	@rm -rf build dist mklml_*
 	@rm -rf $(VIRTUALENV_DIR_BASE) $(VIRTUALENV_DIR_BASE)2 $(VIRTUALENV_DIR_BASE)3 $(STYLEVIRTUALENV_DIR_BASE)
 	@echo
 
