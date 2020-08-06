@@ -125,7 +125,7 @@ $(ACTIVATE): requirements.txt gpu_requirements.txt vis_requirements.txt
 	@. $(ACTIVATE); pip install -U pip
 	@# cython added separately due to h5py dependency ordering bug.  See:
 	@# https://github.com/h5py/h5py/issues/535
-	@. $(ACTIVATE); pip install cython==0.23.1
+	@#. $(ACTIVATE); pip install cython==0.23.1
 	@. $(ACTIVATE); pip install -r requirements.txt
 	@#. $(ACTIVATE); $(MAKE) aeon_install
 ifeq ($(VIS), true)
@@ -169,7 +169,7 @@ sysdeps:
 	@echo "Installing neon dependencies system wide..."
 	@# cython added separately due to h5py dependency ordering bug.  See:
 	@# https://github.com/h5py/h5py/issues/535
-	@pip install cython==0.23.1
+	@#pip install cython==0.23.1
 	@pip install -r requirements.txt
 	#$(MAKE) aeon_install
 ifeq ($(VIS), true)
