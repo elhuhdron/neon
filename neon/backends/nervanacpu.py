@@ -202,7 +202,7 @@ class CPUTensor(Tensor):
 
         new_shape = list(self._tensor[key].shape)
         for idx, k in enumerate(new_shape):
-            if len(new_shape) > 2 and k is 1:
+            if len(new_shape) > 2 and k==1:
                 new_shape.remove(k)
 
         # return a view of the tensor

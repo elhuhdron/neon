@@ -95,7 +95,7 @@ class Callbacks(NervanaObject):
             if hasattr(self, 'callback_data'):
                 del self.callback_data
             # self.name sould give a unique filename
-            self.callback_data = h5py.File(self.name, driver='core', backing_store=False)
+            self.callback_data = h5py.File(self.name, "w", driver='core', backing_store=False)
         else:
             if os.path.isfile(output_file):
                 logger.warn("Overwriting output file %s", output_file)
